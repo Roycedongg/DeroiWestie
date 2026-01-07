@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { showResults, type ShowResult, type Locale } from "@/data/results";
+import { usePathname } from "next/navigation";
+
 
 function t(locale: Locale, zh: string, en: string) {
   return locale === "zh" ? zh : en;
@@ -28,6 +30,9 @@ function isHighlight(r: ShowResult) {
 }
 
 export default function ResultsClient({ locale }: { locale: Locale }) {
+  const pathname = usePathname() || "";
+  const urlLocale: Locale = pathname.startsWith("/en") ? "en" : "zh";
+  const activeLocale: Locale = urlLocale ?? locale;
   const base = `/${locale}`;
 
   const ui = {

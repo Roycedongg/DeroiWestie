@@ -1,19 +1,19 @@
 import Navbar from "@/app/components/Navbar";
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const locale = params.locale;
+  const { locale } = await params;
   const safeLocale = (locale === "en" ? "en" : "zh") as "zh" | "en";
 
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <>
+      <Navbar locale={safeLocale} />
       <main className="min-h-[calc(100vh-120px)]">{children}</main>
-    </div>
+    </>
   );
 }
