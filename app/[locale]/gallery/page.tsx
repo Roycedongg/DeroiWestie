@@ -2,7 +2,8 @@ import path from "path";
 import fs from "fs/promises";
 import GalleryClient from "./GalleryClient";
 
-export const dynamic = "force-static"; // 静态构建更稳
+export const dynamic = "force-static"; // 静态构建
+export const runtime = "nodejs"; // ✅ 关键：避免 Vercel Edge 导致 fs/path 500
 
 type GalleryCategory = "All" | "Kennel Dogs" | "Puppies" | "Shows" | "Lifestyle";
 
@@ -16,17 +17,17 @@ type GalleryItem = {
   date?: string;
 };
 
-const CATEGORY_DIRS: { dir: string; category: GalleryCategory; label: string }[] = [
-  { dir: "dogs", category: "Kennel Dogs", label: "犬舍犬只" },
-  { dir: "puppies", category: "Puppies", label: "幼犬" },
-  { dir: "shows", category: "Shows", label: "赛场" },
-  { dir: "lifestyle", category: "Lifestyle", label: "日常" },
-];
+const CATEGORY_DIRS: { dir: string; category: GalleryCategory; labelZh: string; labelEn: string }[] =
+  [
+    { dir: "dogs", category: "Kennel Dogs", labelZh: "犬舍犬只", labelEn: "Kennel Dogs" },
+    { dir: "puppies", category: "Puppies", labelZh: "幼犬", labelEn: "Puppies" },
+    { dir: "shows", category: "Shows", labelZh: "赛场", labelEn: "Shows" },
+    { dir: "lifestyle", category: "Lifestyle", labelZh: "日常", labelEn: "Lifestyle" },
+  ];
 
 const IMAGE_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
 function titleFromFilename(filename: string) {
-  // rollies-ring-01.jpg -> Rollies Ring 01
   const base = filename.replace(/\.[^/.]+$/, "");
   return base
     .replace(/[_-]+/g, " ")
@@ -43,7 +44,7 @@ async function readDirSafe(absDir: string) {
   }
 }
 
-async function loadGallery(): Promise<GalleryItem[]> {
+async function loadGallery(locale: "zh" | "en"): Promise<GalleryItem[]> {
   const publicRoot = path.join(process.cwd(), "public");
   const galleryRoot = path.join(publicRoot, "gallery");
 
@@ -62,22 +63,28 @@ async function loadGallery(): Promise<GalleryItem[]> {
     for (const file of files) {
       const src = `/gallery/${c.dir}/${file}`;
       const base = file.replace(/\.[^/.]+$/, "");
+      const label = locale === "en" ? c.labelEn : c.labelZh;
+
       items.push({
-        id: `${c.dir}-${base}`, // 保证唯一
+        id: `${c.dir}-${base}`,
         src,
-        alt: `DeRoi Westie - ${c.label}`,
+        alt: `DeRoi Westie - ${label}`,
         category: c.category,
         title: titleFromFilename(file),
       });
     }
   }
 
-  // 你也可以在这里做自定义排序，比如 shows 优先
   return items;
 }
 
-export default async function GalleryPage() {
-  const items = await loadGallery();
+export default async function GalleryPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const locale = params.locale === "en" ? "en" : "zh";
+  const items = await loadGallery(locale);
 
-  return <GalleryClient items={items} />;
+  return <GalleryClient items={items} locale={locale} />;
 }

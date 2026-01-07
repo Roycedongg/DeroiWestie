@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+type Locale = "zh" | "en";
 type GalleryCategory = "All" | "Kennel Dogs" | "Puppies" | "Shows" | "Lifestyle";
 
 type GalleryItem = {
@@ -15,14 +16,6 @@ type GalleryItem = {
   note?: string;
   date?: string;
 };
-
-const CATEGORIES: { key: GalleryCategory; label: string }[] = [
-  { key: "All", label: "全部" },
-  { key: "Kennel Dogs", label: "犬舍犬只" },
-  { key: "Puppies", label: "幼犬" },
-  { key: "Shows", label: "赛场" },
-  { key: "Lifestyle", label: "日常" },
-];
 
 function BrandButton({
   href,
@@ -48,7 +41,49 @@ function BrandButton({
   );
 }
 
-export default function GalleryClient({ items }: { items: GalleryItem[] }) {
+export default function GalleryClient({
+  items,
+  locale,
+}: {
+  items: GalleryItem[];
+  locale: Locale;
+}) {
+  const isEn = locale === "en";
+  const base = `/${locale}`;
+
+  const CATEGORIES: { key: GalleryCategory; label: string }[] = isEn
+    ? [
+        { key: "All", label: "All" },
+        { key: "Kennel Dogs", label: "Kennel Dogs" },
+        { key: "Puppies", label: "Puppies" },
+        { key: "Shows", label: "Shows" },
+        { key: "Lifestyle", label: "Lifestyle" },
+      ]
+    : [
+        { key: "All", label: "全部" },
+        { key: "Kennel Dogs", label: "犬舍犬只" },
+        { key: "Puppies", label: "幼犬" },
+        { key: "Shows", label: "赛场" },
+        { key: "Lifestyle", label: "日常" },
+      ];
+
+  const t = {
+    pageTag: "GALLERY",
+    title: isEn ? "Gallery" : "犬舍画廊",
+    desc: isEn
+      ? "A collection of our kennel dogs, show moments, and daily life. We do not display client grooming photos."
+      : "这里展示犬舍自家犬只与赛场/日常记录。不展示客人美容作品图。",
+    services: isEn ? "Services" : "查看服务",
+    contact: isEn ? "Contact" : "合作 / 咨询",
+    empty: isEn
+      ? "No photos yet. Put images under public/gallery/ in the category folders."
+      : "暂无照片。把图片放到 public/gallery/ 下对应分类文件夹即可。",
+    closeHint: isEn
+      ? "Swipe left/right on phone | ← → to navigate | Esc to close"
+      : "手机左右滑动切换｜键盘 ← → 切换｜Esc 关闭",
+    backToList: isEn ? "← Back to gallery" : "← 返回画廊",
+  };
+
   const [active, setActive] = useState<GalleryCategory>("All");
   const [lightboxId, setLightboxId] = useState<string | null>(null);
 
@@ -77,7 +112,6 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
     setLightboxId(filtered[nextIndex].id);
   };
 
-  // ESC 关闭 / ← → 切换
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!lightboxId) return;
@@ -90,21 +124,19 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxId, currentIndex, filtered.length]);
 
-  // ✅ 手机滑动手势
   const startX = useRef<number | null>(null);
   const startY = useRef<number | null>(null);
   const tracking = useRef(false);
 
   const onTouchStart = (e: React.TouchEvent) => {
     if (!current) return;
-    const t = e.touches[0];
-    startX.current = t.clientX;
-    startY.current = t.clientY;
+    const t0 = e.touches[0];
+    startX.current = t0.clientX;
+    startY.current = t0.clientY;
     tracking.current = true;
   };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    // 不阻止滚动，让用户能上下滑页面（灯箱内一般不需要滚动，但保险）
+  const onTouchMove = (_e: React.TouchEvent) => {
     if (!tracking.current) return;
   };
 
@@ -118,16 +150,15 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
     startY.current = null;
     if (sx == null || sy == null) return;
 
-    const t = e.changedTouches[0];
-    const dx = t.clientX - sx;
-    const dy = t.clientY - sy;
+    const t1 = e.changedTouches[0];
+    const dx = t1.clientX - sx;
+    const dy = t1.clientY - sy;
 
-    // 阈值：横向滑动明显且大于纵向滑动才触发
     const absX = Math.abs(dx);
     const absY = Math.abs(dy);
 
-    if (absX < 45) return; // 太短不触发
-    if (absX < absY * 1.2) return; // 主要是纵向滚动，忽略
+    if (absX < 45) return;
+    if (absX < absY * 1.2) return;
 
     if (dx > 0) prev();
     else next();
@@ -136,29 +167,25 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
   return (
     <div className="min-h-screen bg-brand">
       <section className="mx-auto max-w-6xl px-4 py-10">
-        {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-semibold tracking-wide text-brand-200">GALLERY</p>
+            <p className="text-xs font-semibold tracking-wide text-brand-200">{t.pageTag}</p>
             <h1 className="mt-2 text-2xl font-bold tracking-tight text-white md:text-3xl">
-              犬舍画廊
+              {t.title}
             </h1>
-            <p className="mt-2 max-w-2xl text-sm text-brand-100/90">
-              这里展示犬舍自家犬只与赛场/日常记录。不展示客人美容作品图。
-            </p>
+            <p className="mt-2 max-w-2xl text-sm text-brand-100/90">{t.desc}</p>
           </div>
 
           <div className="flex gap-2">
-            <BrandButton href="/services" variant="outline">
-              查看服务
+            <BrandButton href={`${base}/services`} variant="outline">
+              {t.services}
             </BrandButton>
-            <BrandButton href="/contact" variant="solid">
-              合作 / 咨询
+            <BrandButton href={`${base}/contact`} variant="solid">
+              {t.contact}
             </BrandButton>
           </div>
         </div>
 
-        {/* Filters */}
         <div className="mt-6 flex flex-wrap gap-2">
           {CATEGORIES.map((c) => {
             const isActive = c.key === active;
@@ -179,12 +206,9 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
           })}
         </div>
 
-        {/* Grid */}
         <div className="mt-8 rounded-3xl bg-white/90 backdrop-blur shadow-soft ring-1 ring-black/5 p-4 md:p-6">
           {filtered.length === 0 ? (
-            <div className="py-16 text-center text-sm text-ink-600">
-              暂无照片。把图片放到 <span className="font-semibold">public/gallery/</span> 下对应分类文件夹即可。
-            </div>
+            <div className="py-16 text-center text-sm text-ink-600">{t.empty}</div>
           ) : (
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
               {filtered.map((it) => (
@@ -222,10 +246,8 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
         </div>
       </section>
 
-      {/* Lightbox */}
       {current ? (
         <div className="fixed inset-0 z-50">
-          {/* overlay */}
           <button aria-label="Close" onClick={close} className="absolute inset-0 bg-black/70" />
 
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4">
@@ -235,7 +257,6 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
-              {/* Top bar */}
               <div className="flex items-center justify-between border-b border-ink-200 px-4 py-3">
                 <div className="min-w-0">
                   <div className="truncate text-sm font-semibold text-ink-900">
@@ -252,7 +273,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                     onClick={prev}
                     className="rounded-xl border border-ink-200 px-3 py-1 text-xs font-semibold text-ink-700 hover:bg-ink-50"
                     aria-label="Prev"
-                    title="上一张（←）"
+                    title={isEn ? "Previous (←)" : "上一张（←）"}
                   >
                     ←
                   </button>
@@ -260,7 +281,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                     onClick={next}
                     className="rounded-xl border border-ink-200 px-3 py-1 text-xs font-semibold text-ink-700 hover:bg-ink-50"
                     aria-label="Next"
-                    title="下一张（→）"
+                    title={isEn ? "Next (→)" : "下一张（→）"}
                   >
                     →
                   </button>
@@ -268,14 +289,13 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                     onClick={close}
                     className="rounded-xl border border-ink-200 px-3 py-1 text-xs font-semibold text-ink-700 hover:bg-ink-50"
                     aria-label="Close"
-                    title="关闭（Esc）"
+                    title={isEn ? "Close (Esc)" : "关闭（Esc）"}
                   >
                     ✕
                   </button>
                 </div>
               </div>
 
-              {/* Image area (更大) */}
               <div className="relative bg-ink-50">
                 <div className="relative h-[80vh] w-full">
                   <Image
@@ -289,14 +309,12 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                 </div>
               </div>
 
-              {/* Caption */}
               {current.note ? (
                 <div className="border-t border-ink-200 px-4 py-3 text-sm text-ink-700">
                   {current.note}
                 </div>
               ) : null}
 
-              {/* Thumbs */}
               {filtered.length > 1 ? (
                 <div className="border-t border-ink-200 bg-white px-4 py-3">
                   <div className="flex gap-2 overflow-x-auto pb-1">
@@ -320,9 +338,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                       );
                     })}
                   </div>
-                  <div className="mt-2 text-xs text-ink-500">
-                    手机左右滑动切换｜键盘 ← → 切换｜Esc 关闭
-                  </div>
+                  <div className="mt-2 text-xs text-ink-500">{t.closeHint}</div>
                 </div>
               ) : null}
             </div>
