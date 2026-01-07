@@ -14,8 +14,8 @@ export default async function LocaleLayout({
   return (
     <>
       <Navbar locale={safeLocale} />
-      <Footer locale={safeLocale} />
       <main className="min-h-[calc(100vh-120px)]">{children}</main>
+      <Footer locale={safeLocale} />
     </>
   );
 }
