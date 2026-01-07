@@ -25,7 +25,7 @@ export const serviceCategories: {
 }[] = [
   {
     key: "Hand Stripping",
-    label: { zh: "手拔毛 / 开荒", en: "Hand Stripping / First Visit Reset" },
+    label: { zh: "拔毛 / 开荒", en: "Hand Stripping / First Visit Reset" },
     desc: {
       zh: "适合第一次到店、毛况复杂、需要重建轮廓与毛质的狗狗。开荒通常更耗时，但能为后续周期护理打下最好基础。",
       en: "Best for first-time visits or complex coat conditions. A reset takes longer but builds the best foundation for long-term maintenance.",
@@ -37,7 +37,7 @@ export const serviceCategories: {
   },
   {
     key: "Maintenance",
-    label: { zh: "维护 / 周期护理", en: "Maintenance / Routine Cycle" },
+    label: { zh: "循环 / 周期护理", en: "Rolling / Routine Cycle" },
     desc: {
       zh: "适合规律回访、维持造型与毛质的狗狗。周期越稳定，越省时、效果越好。",
       en: "For regular returning clients to maintain shape and coat quality. The more consistent the cycle, the better (and faster) the results.",
@@ -51,7 +51,7 @@ export const serviceCategories: {
     key: "Full Grooming",
     label: { zh: "全剪造型（Full Grooming）", en: "Full Grooming (Full Clip)" },
     desc: {
-      zh: "适合贵宾、杜宾混种（Doodle）、马尔济斯、西施、约克夏、比熊等需要完整剪毛造型的犬种。",
+      zh: "适合贵宾、贵宾混种（Doodle）、马尔济斯、西施、约克夏、比熊等需要完整剪毛造型的犬种。",
       en: "Ideal for Poodles, Doodles, Maltese, Shih Tzu, Yorkies, Bichons and other breeds that need full clip styling.",
     },
     tips: {
@@ -138,17 +138,17 @@ const rawServices: ServiceItem[] = [
   {
     id: "westie-handstrip-first",
     category: "Hand Stripping",
-    title: { zh: "西高地开荒（第一次手拔毛）", en: "Westie Reset (First Hand Stripping)" },
+    title: { zh: "西高地开荒（第一次拔毛）", en: "Westie Reset (First Hand Stripping)" },
     subtitle: { zh: "首次到店 / 毛况复杂 / 重建轮廓", en: "First visit / complex coat / silhouette rebuild" },
     priceCAD: 200,
     durationMin: 180,
     shortDesc: {
-      zh: "针对第一次到店或毛况复杂的西高地，进行完整手拔毛与轮廓重建。",
+      zh: "针对第一次到店或毛况复杂的西高地，进行赛级拔毛与轮廓重建。",
       en: "For first-time Westies or complex coats: full hand stripping and silhouette rebuild.",
     },
     details: {
-      zh: ["完整手拔毛与轮廓塑造", "根据毛况调整处理方式", "基础清洁与整理"],
-      en: ["Full hand stripping and silhouette shaping", "Method adjusted to coat condition", "Basic cleaning and finishing"],
+      zh: ["赛级拔毛造型与轮廓塑造", "根据毛况调整处理方式", "梗犬专用洗护"],
+      en: ["Show-level hand stripping and silhouette shaping", "Method adjusted to coat condition", "Terrier special finishing"],
     },
 
     image: "/services/thumbs/handstrip.jpg",
@@ -180,7 +180,7 @@ const rawServices: ServiceItem[] = [
   {
     id: "westie-maintenance",
     category: "Maintenance",
-    title: { zh: "西高地循环（周期手拔毛）", en: "Westie Maintenance (Routine Hand Stripping)" },
+    title: { zh: "西高地循环（周期拔毛）", en: "Westie Maintenance (Routine Hand Stripping)" },
     subtitle: { zh: "规律回访 / 保持轮廓与毛质", en: "Regular return / keep outline and texture" },
     priceCAD: 150,
     durationMin: 150,

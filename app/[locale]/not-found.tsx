@@ -1,13 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
+function getLocaleFromPathname(pathname: string) {
+  // pathname like: /zh/gallery  /en  /zh
+  const seg = (pathname || "/").split("/").filter(Boolean)[0];
+  if (!seg) return "en";
+  return seg;
+}
 
 export default function NotFound() {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
+  const [locale, setLocale] = useState("en");
 
-  const isZh = locale.startsWith("zh");
+  useEffect(() => {
+    try {
+      const loc = getLocaleFromPathname(window.location.pathname);
+      setLocale(loc);
+    } catch {
+      // keep default "en"
+    }
+  }, []);
+
+  const isZh = useMemo(() => locale.startsWith("zh"), [locale]);
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">

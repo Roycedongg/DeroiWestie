@@ -1,5 +1,6 @@
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/footer";
+import { Analytics } from "@vercel/analytics/next"
 
 export default async function LocaleLayout({
   children,

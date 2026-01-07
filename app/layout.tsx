@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Nunito, Quicksand } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next"
 
 const nunito = Nunito({
   subsets: ["latin"],

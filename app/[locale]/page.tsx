@@ -163,7 +163,7 @@ export default async function HomePage({
                 Welcome to <br />DeRoi Westie
               </h1>
 
-              <div className="mt-3 text-base font-semibold text-ink-800 md:text-xl">
+              <div className="mt-3 text-base font-semibold text-zinc-300 text-ink-800 md:text-xl">
                 {t.subtitle}
               </div>
 
