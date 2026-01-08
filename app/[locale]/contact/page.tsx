@@ -12,7 +12,8 @@ const CONTACT = {
   email: "deroiwestie@gmail.com",
   wechat: "502966909",
   instagram: "https://instagram.com/_rroyce.d",
-  xhs: "https://www.xiaohongshu.com/user/profile/502966909",
+  xhs: "https://www.xiaohongshu.com/user/profile/W502966909",
+  facebook: "https://www.facebook.com/yijuan.dong.16",
   location: "Richmond / Vancouver, BC",
 };
 
@@ -254,6 +255,11 @@ export default function ContactPage() {
                 {CONTACT.xhs ? (
                   <BrandLinkButton href={CONTACT.xhs} variant="outline" external>
                     {t(locale, "小红书", "Xiaohongshu")}
+                  </BrandLinkButton>
+                ) : null}
+                {CONTACT.facebook ? (
+                  <BrandLinkButton href={CONTACT.facebook} variant="outline" external>
+                    Facebook
                   </BrandLinkButton>
                 ) : null}
               </div>
