@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Locale = "zh" | "en";
@@ -48,8 +49,11 @@ export default function GalleryClient({
   items: GalleryItem[];
   locale: Locale;
 }) {
-  const isEn = locale === "en";
-  const base = `/${locale}`;
+  const pathname = usePathname() || "";
+  const activeLocale: Locale =
+    pathname.startsWith("/en") ? "en" : pathname.startsWith("/zh") ? "zh" : locale;
+  const isEn = activeLocale === "en";
+  const base = `/${activeLocale}`;
 
   const CATEGORIES: { key: GalleryCategory; label: string }[] = isEn
     ? [
