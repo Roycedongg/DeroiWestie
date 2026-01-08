@@ -31,45 +31,45 @@ function isHighlight(r: ShowResult) {
 
 export default function ResultsClient({ locale }: { locale: Locale }) {
   const pathname = usePathname() || "";
-  const urlLocale: Locale = pathname.startsWith("/en") ? "en" : "zh";
-  const activeLocale: Locale = urlLocale ?? locale;
-  const base = `/${locale}`;
+  const activeLocale: Locale =
+    pathname.startsWith("/en") ? "en" : pathname.startsWith("/zh") ? "zh" : locale;
+  const base = `/${activeLocale}`;
 
   const ui = {
     eyebrow: "RESULTS",
-    title: t(locale, "比赛战绩", "Show Results"),
+    title: t(activeLocale, "比赛战绩", "Show Results"),
     subtitle: t(
-      locale,
+      activeLocale,
       "高光战绩置顶，其他记录按年份归档。后面你如果要放照片/视频，我们会把每条战绩联动到 Gallery。",
       "Highlights are pinned on top, and the rest are archived by year. Later we can link each result to the Gallery with photos/videos."
     ),
-    viewServices: t(locale, "查看服务", "View Services"),
-    goGallery: t(locale, "去作品集", "Go to Gallery"),
+    viewServices: t(activeLocale, "查看服务", "View Services"),
+    goGallery: t(activeLocale, "去作品集", "Go to Gallery"),
 
-    dogLabel: t(locale, "犬只", "Dog"),
-    searchLabel: t(locale, "搜索", "Search"),
+    dogLabel: t(activeLocale, "犬只", "Dog"),
+    searchLabel: t(activeLocale, "搜索", "Search"),
     searchPlaceholder: t(
-      locale,
+      activeLocale,
       "搜索：BIS / BOG / 评审 / 地点 / 标题…",
       "Search: BIS / BOG / judge / location / title…"
     ),
 
-    highlightTitle: t(locale, "高光战绩", "Highlights"),
+    highlightTitle: t(activeLocale, "高光战绩", "Highlights"),
     emptyHighlight: t(
-      locale,
+      activeLocale,
       "暂无高光战绩（你可以在 data/results.ts 里把 tier 设为 HIGHLIGHT，或加上 BIS/BOG/BOB tag）。",
       "No highlights yet (set tier to HIGHLIGHT in data/results.ts, or add BIS/BOG/BOB tags)."
     ),
 
-    timelineTitle: t(locale, "时间线", "Timeline"),
-    emptyTimeline: t(locale, "当前筛选下暂无记录。", "No records under current filters."),
+    timelineTitle: t(activeLocale, "时间线", "Timeline"),
+    emptyTimeline: t(activeLocale, "当前筛选下暂无记录。", "No records under current filters."),
 
-    badgeHighlight: t(locale, "高光", "Highlight"),
-    judgeLabel: t(locale, "审查：", "Judge: "),
+    badgeHighlight: t(activeLocale, "高光", "Highlight"),
+    judgeLabel: t(activeLocale, "审查：", "Judge: "),
 
     countRecords: (total: number, hi: number) =>
-      locale === "zh" ? `${total} 条记录 · ${hi} 条高光` : `${total} records · ${hi} highlights`,
-    countItems: (n: number) => (locale === "zh" ? `${n} 条` : `${n} items`),
+      activeLocale === "zh" ? `${total} 条记录 · ${hi} 条高光` : `${total} records · ${hi} highlights`,
+    countItems: (n: number) => (activeLocale === "zh" ? `${n} 条` : `${n} items`),
   };
 
   const [lightboxImages, setLightboxImages] = useState<{ src: string; alt?: string }[] | null>(null);
@@ -91,20 +91,20 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
       if (!q) return true;
 
       const hay = [
-        r.title[locale],
+        r.title[activeLocale],
         r.dogName,
         r.location ?? "",
         r.judge ?? "",
         ...(r.tags ?? []),
-        ...(r.highlights[locale] ?? []),
-        ...(r.images?.map((img) => img.alt?.[locale] ?? "") ?? []),
+        ...(r.highlights[activeLocale] ?? []),
+        ...(r.images?.map((img) => img.alt?.[activeLocale] ?? "") ?? []),
       ]
         .join(" ")
         .toLowerCase();
 
       return hay.includes(q);
     });
-  }, [sortedAll, dogFilter, query, locale]);
+  }, [sortedAll, dogFilter, query, activeLocale]);
 
   const highlights = useMemo(() => filtered.filter(isHighlight), [filtered]);
   const normal = useMemo(() => filtered.filter((r) => !isHighlight(r)), [filtered]);
@@ -193,7 +193,7 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="text-xs font-semibold text-zinc-500">{formatDate(r.date)}</div>
-                      <div className="mt-1 text-lg font-bold text-zinc-900">{r.title[locale]}</div>
+                      <div className="mt-1 text-lg font-bold text-zinc-900">{r.title[activeLocale]}</div>
                       <div className="mt-1 text-sm text-zinc-600">
                         {r.dogName}
                         {r.location ? <span className="text-zinc-400"> · </span> : null}
@@ -213,12 +213,19 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                           key={img.src}
                           type="button"
                           onClick={() => {
-                            setLightboxImages(r.images!.map((x) => ({ src: x.src, alt: x.alt?.[locale] })));
+                            setLightboxImages(
+                              r.images!.map((x) => ({ src: x.src, alt: x.alt?.[activeLocale] }))
+                            );
                             setLightboxIndex(idx);
                           }}
                           className="relative aspect-[4/3] overflow-hidden rounded-xl border border-zinc-200 focus:outline-none"
                         >
-                          <Image src={img.src} alt={img.alt?.[locale] ?? r.title[locale]} fill className="object-cover" />
+                          <Image
+                            src={img.src}
+                            alt={img.alt?.[activeLocale] ?? r.title[activeLocale]}
+                            fill
+                            className="object-cover"
+                          />
                         </button>
                       ))}
                     </div>
@@ -238,7 +245,7 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                   ) : null}
 
                   <ul className="mt-4 space-y-2 text-sm text-zinc-700">
-                    {r.highlights[locale].map((h) => (
+                    {r.highlights[activeLocale].map((h) => (
                       <li key={h} className="flex gap-2">
                         <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-zinc-400" />
                         <span>{h}</span>
@@ -277,7 +284,7 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                           <div>
                             <div className="text-xs font-semibold text-zinc-500">{formatDate(r.date)}</div>
-                            <div className="mt-1 text-lg font-bold text-zinc-900">{r.title[locale]}</div>
+                            <div className="mt-1 text-lg font-bold text-zinc-900">{r.title[activeLocale]}</div>
                             <div className="mt-1 text-sm text-zinc-600">
                               {r.dogName}
                               {r.location ? <span className="text-zinc-400"> · </span> : null}
@@ -300,7 +307,7 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                         </div>
 
                         <ul className="mt-4 space-y-2 text-sm text-zinc-700">
-                          {r.highlights[locale].map((h) => (
+                          {r.highlights[activeLocale].map((h) => (
                             <li key={h} className="flex gap-2">
                               <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-zinc-400" />
                               <span>{h}</span>

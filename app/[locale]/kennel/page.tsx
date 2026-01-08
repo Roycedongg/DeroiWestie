@@ -125,8 +125,13 @@ function Section({
   );
 }
 
-export default function KennelPage({ params }: { params: Params }) {
-  const locale = params.locale ?? "zh";
+export default async function KennelPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = rawLocale === "en" ? "en" : "zh";
   const t = getText(locale);
 
   const studs = kennelDogs.filter((d) => d.sex === "male");

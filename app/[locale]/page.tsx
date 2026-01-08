@@ -108,8 +108,8 @@ export default async function HomePage({
       contact: {
         title: isEn ? "Contact & Collaboration" : "联系与合作",
         desc: isEn
-          ? "Coat checks, grooming plans, or collaboration? Send photos first for a quick assessment."
-          : "想确认毛况、咨询犬种护理方案、或合作拍摄与活动？欢迎先发照片沟通。",
+          ? "Coat checks, grooming plans, or adoption? Send photos first for a quick assessment."
+          : "想确认毛况、咨询犬种护理方案、或领养幼犬？欢迎沟通。",
         cta: isEn ? "Contact" : "去联系",
       },
     },
@@ -257,10 +257,12 @@ export default async function HomePage({
         <div className="rounded-3xl bg-white/90 p-6 shadow-soft ring-1 ring-black/5 backdrop-blur md:p-8">
           <div className="grid gap-6 md:grid-cols-3">
             <div>
-              <div className="text-sm font-heading font-semibold text-brand-900">
+              <div className={`${knewave.className} text-sm font-semibold text-brand-900`}>
                 Focus
               </div>
-              <div className="mt-2 text-lg font-bold text-ink-900">
+              <div
+                className={`${knewave.className} mt-2 text-lg font-bold text-ink-900`}
+              >
                 {t.why.focusTitle}
               </div>
               <p className="mt-2 text-sm leading-relaxed text-ink-600">
@@ -269,10 +271,12 @@ export default async function HomePage({
             </div>
 
             <div>
-              <div className="text-sm font-heading font-semibold text-brand-900">
+              <div className={`${knewave.className} text-sm font-semibold text-brand-900`}>
                 Comfort
               </div>
-              <div className="mt-2 text-lg font-bold text-ink-900">
+              <div
+                className={`${knewave.className} mt-2 text-lg font-bold text-ink-900`}
+              >
                 {t.why.comfortTitle}
               </div>
               <p className="mt-2 text-sm leading-relaxed text-ink-600">
@@ -281,10 +285,12 @@ export default async function HomePage({
             </div>
 
             <div>
-              <div className="text-sm font-heading font-semibold text-brand-900">
+              <div className={`${knewave.className} text-sm font-semibold text-brand-900`}>
                 Quality
               </div>
-              <div className="mt-2 text-lg font-bold text-ink-900">
+              <div
+                className={`${knewave.className} mt-2 text-lg font-bold text-ink-900`}
+              >
                 {t.why.qualityTitle}
               </div>
               <p className="mt-2 text-sm leading-relaxed text-ink-600">

@@ -199,7 +199,7 @@ export default async function ServicesPage({
                         className={idx === 0 ? "" : "border-t border-ink-200/70"}
                       >
                         <summary className="cursor-pointer list-none px-6 py-4 md:px-7">
-                          <div className="flex items-start justify-between gap-4">
+                          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                             {/* Left */}
                             <div className="min-w-0">
                               <div className="text-sm font-semibold text-ink-900">
@@ -229,21 +229,9 @@ export default async function ServicesPage({
                             </div>
 
                             {/* Right */}
-                            <div className="shrink-0">
-                              <div className="flex items-start gap-3">
-                                {s.thumb && (
-                                  <div className="relative h-44 w-44 overflow-hidden rounded-xl border border-ink-200 bg-ink-50">
-                                    <Image
-                                      src={s.thumb}
-                                      alt={title}
-                                      fill
-                                      sizes="176px"
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                )}
-
-                                <div className="text-right">
+                            <div className="w-full md:w-auto md:shrink-0">
+                              <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-start">
+                                <div className="text-left md:text-right">
                                   <div className="text-sm font-bold text-ink-900">
                                     {formatMoneyCAD(s.priceCAD)}
                                   </div>
@@ -251,6 +239,17 @@ export default async function ServicesPage({
                                     {minutesToText(s.durationMin, locale)}
                                   </div>
                                 </div>
+                                {s.thumb && (
+                                  <div className="relative h-52 w-full overflow-hidden rounded-xl border border-ink-200 bg-ink-50 md:h-44 md:w-44">
+                                    <Image
+                                      src={s.thumb}
+                                      alt={title}
+                                      fill
+                                      sizes="(max-width: 768px) 100vw, 176px"
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
