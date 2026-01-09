@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { kennelDogs, type Locale, type KennelDog } from "@/data/kennelDogs";
 
@@ -133,6 +134,7 @@ export default async function KennelPage({
   const { locale: rawLocale } = await params;
   const locale: Locale = rawLocale === "en" ? "en" : "zh";
   const t = getText(locale);
+  const base = `/${locale}`;
 
   const studs = kennelDogs.filter((d) => d.sex === "male");
   const bitches = kennelDogs.filter((d) => d.sex === "female");
@@ -140,18 +142,30 @@ export default async function KennelPage({
   return (
     <div className="bg-brand">
       <main className="mx-auto max-w-6xl px-4 py-10 md:py-14 space-y-12">
-        <header className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">
-            {t.title}
-          </h1>
-          <p className="max-w-3xl text-sm md:text-base leading-relaxed text-white/80">
-            {t.subtitle}
-          </p>
+        <header className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div className="space-y-3">
+            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">
+              {t.title}
+            </h1>
+            <p className="max-w-3xl text-sm md:text-base leading-relaxed text-white/80">
+              {t.subtitle}
+            </p>
+            <p className="text-sm text-white/80">
+              {locale === "zh" ? "对幼犬或未来领养感兴趣？" : "Interested in a puppy or future adoption?"}
+            </p>
+          </div>
+          <div className="md:pt-1">
+            <Link
+              href={`${base}/placement`}
+              className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-2.5 text-sm font-semibold text-brand-900 transition hover:bg-brand-50"
+            >
+              {locale === "zh" ? "申请领养" : "Apply for Adoption"}
+            </Link>
+          </div>
         </header>
 
-<Section locale={locale} label={t.bitches} dogs={bitches} />
-<Section locale={locale} label={t.studs} dogs={studs} />
-
+        <Section locale={locale} label={t.bitches} dogs={bitches} />
+        <Section locale={locale} label={t.studs} dogs={studs} />
       </main>
     </div>
   );

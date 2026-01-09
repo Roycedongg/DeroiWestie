@@ -214,12 +214,12 @@ export default function GalleryClient({
           {filtered.length === 0 ? (
             <div className="py-16 text-center text-sm text-ink-600">{t.empty}</div>
           ) : (
-            <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((it) => (
                 <button
                   key={it.id}
                   onClick={() => setLightboxId(it.id)}
-                  className="mb-4 w-full break-inside-avoid overflow-hidden rounded-2xl border border-ink-200 bg-white text-left shadow-sm transition hover:shadow-md"
+                  className="w-full overflow-hidden rounded-2xl border border-ink-200 bg-white text-left shadow-sm transition hover:shadow-md"
                 >
                   <div className="relative aspect-[4/5] w-full bg-ink-50">
                     <Image

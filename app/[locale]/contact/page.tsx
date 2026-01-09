@@ -47,18 +47,20 @@ function BrandLinkButton({
   children,
   variant = "solid",
   external,
+  className,
 }: {
   href: string;
   children: React.ReactNode;
   variant?: "solid" | "outline";
   external?: boolean;
+  className?: string;
 }) {
   const cls =
     variant === "solid"
       ? "bg-brand text-white hover:bg-brand-700"
       : "border border-brand-200 bg-white/70 text-brand-800 hover:bg-brand-50";
 
-  const common = `inline-flex items-center justify-center rounded-2xl px-4 py-2.5 text-sm font-semibold transition ${cls}`;
+  const common = `inline-flex items-center justify-center rounded-2xl px-4 py-2.5 text-sm font-semibold transition ${cls} ${className ?? ""}`;
 
   if (external) {
     return (
@@ -153,17 +155,23 @@ export default function ContactPage() {
                 "Want to confirm coat condition, choose a service, or ask about puppies? Send photos and a brief note first. We mainly showcase kennel dogs and do not display client grooming photos."
               )}
             </p>
+            <p className="mt-3 text-sm text-brand-100/90">
+              {t(locale, "对幼犬或未来领养感兴趣？", "Interested in a puppy or future adoption?")}
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <BrandLinkButton href={BOOKING_URL} variant="solid" external>
-              {t(locale, "立即预约", "Book now")}
-            </BrandLinkButton>
             <BrandLinkButton href={`${base}/services`} variant="outline">
               {t(locale, "查看服务", "View services")}
             </BrandLinkButton>
             <BrandLinkButton href={`${base}/gallery`} variant="outline">
               {t(locale, "犬舍画廊", "Kennel gallery")}
+            </BrandLinkButton>
+            <BrandLinkButton href={`${base}/placement`} variant="outline">
+              {t(locale, "申请领养", "Apply for Adoption")}
+            </BrandLinkButton>
+            <BrandLinkButton href={BOOKING_URL} variant="outline" external>
+              {t(locale, "立即预约", "Book now")}
             </BrandLinkButton>
           </div>
         </div>
@@ -392,14 +400,14 @@ export default function ContactPage() {
                       if (!canSubmit) e.preventDefault();
                     }}
                     className={[
-                      "inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition",
+                      "inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition whitespace-nowrap",
                       canSubmit ? "bg-brand text-white hover:bg-brand-700" : "cursor-not-allowed bg-ink-200 text-ink-500",
                     ].join(" ")}
                   >
                     {t(locale, "生成邮件并发送", "Generate email & send")}
                   </a>
 
-                  <BrandLinkButton href={BOOKING_URL} variant="outline" external>
+                  <BrandLinkButton href={BOOKING_URL} variant="outline" external className="whitespace-nowrap">
                     {t(locale, "或直接预约", "Or book directly")}
                   </BrandLinkButton>
                 </div>

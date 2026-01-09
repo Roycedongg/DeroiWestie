@@ -89,6 +89,10 @@ export default async function HomePage({
     book: isEn ? "Book an Appointment" : "立即预约",
     services: isEn ? "View Services" : "查看服务项目",
     gallery: isEn ? "Gallery" : "犬舍画廊",
+    adoptionPrompt: isEn
+      ? "Interested in a puppy or future adoption?"
+      : "对幼犬或未来领养感兴趣？",
+    adoptionCta: isEn ? "Apply for Adoption" : "申请领养",
 
     cards: {
       services: {
@@ -106,7 +110,7 @@ export default async function HomePage({
         cta: isEn ? "Enter Gallery" : "进入画廊",
       },
       contact: {
-        title: isEn ? "Contact & Collaboration" : "联系与合作",
+        title: isEn ? "Contact & Puppy Adoption" : "联系与领养",
         desc: isEn
           ? "Coat checks, grooming plans, or adoption? Send photos first for a quick assessment."
           : "想确认毛况、咨询犬种护理方案、或领养幼犬？欢迎沟通。",
@@ -171,29 +175,38 @@ export default async function HomePage({
                 {t.intro}
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={BOOKING_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-2xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
-                >
-                  {t.book}
-                </a>
-
-                <Link
-                  href={`${base}/services`}
-                  className="inline-flex items-center justify-center rounded-2xl border border-ink-900/15 bg-white px-5 py-3 text-sm font-semibold text-ink-900 transition hover:bg-ink-50"
-                >
-                  {t.services}
-                </Link>
-
-                <Link
-                  href={`${base}/gallery`}
-                  className="inline-flex items-center justify-center rounded-2xl border border-ink-900/15 bg-white px-5 py-3 text-sm font-semibold text-ink-900 transition hover:bg-ink-50"
-                >
-                  {t.gallery}
-                </Link>
+              <p className="mt-6 text-sm text-ink-600">{t.adoptionPrompt}</p>
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href={BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-2xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
+                  >
+                    {t.book}
+                  </a>
+                  <Link
+                    href={`${base}/placement`}
+                    className="inline-flex items-center justify-center rounded-2xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
+                  >
+                    {t.adoptionCta}
+                  </Link>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href={`${base}/services`}
+                    className="inline-flex items-center justify-center rounded-2xl border border-ink-900/15 bg-white px-5 py-3 text-sm font-semibold text-ink-900 transition hover:bg-ink-50"
+                  >
+                    {t.services}
+                  </Link>
+                  <Link
+                    href={`${base}/gallery`}
+                    className="inline-flex items-center justify-center rounded-2xl border border-ink-900/15 bg-white px-5 py-3 text-sm font-semibold text-ink-900 transition hover:bg-ink-50"
+                  >
+                    {t.gallery}
+                  </Link>
+                </div>
               </div>
 
               <p className="mt-3 text-xs text-ink-500">{t.note}</p>
