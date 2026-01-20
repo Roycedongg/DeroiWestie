@@ -31,8 +31,8 @@ export type ShowResult = {
 
 export const showResults: ShowResult[] = [
   {
-    id: "2026-01-10-rollies-stats",
-    date: "2026-01-10",
+    id: "2026-01-17-rollies-stats",
+    date: "2026-01-17",
     dogName: "Rollies",
     title: { zh: "CKU 杭州站", en: "Debut at CKU Hangzhou" },
     location: "China",
