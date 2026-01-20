@@ -31,10 +31,70 @@ export type ShowResult = {
 
 export const showResults: ShowResult[] = [
   {
+    id: "2026-01-10-rollies-stats",
+    date: "2026-01-10",
+    dogName: "Rollies",
+    title: { zh: "CKU 杭州站", en: "Debut at CKU Hangzhou" },
+    location: "China",
+    judge:"George Schogol, Johan Andersson, Johnny Lee, Myriam Vermeire, Haruko Mizukoshi, Seven Duan", 
+    tier: "NORMAL",
+    tags: ["BIS"],
+    highlights: {
+      zh: ["BoB*6, BIS1*2, BIS2*1, BIS3*2, BIS4*1"],
+      en: ["Bob*6, BIS1*2, BIS2*1, BIS3*2, BIS4*1"],
+    },
+    images: [
+      {
+        src: "/results/rollies-hangzhou1.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+      {
+        src: "/results/rollies-hangzhou2.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },{
+        src: "/results/rollies-hangzhou3.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },{
+        src: "/results/rollies-hangzhou4.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+    ],
+  },
+
+  {
+    id: "2026-01-10-rollies-stats",
+    date: "2026-01-10",
+    dogName: "Rollies",
+    title: { zh: "CKU 南京站", en: "Debut at CKU Nanjing" },
+    location: "China",
+    judge:"Panche Dameski, Mica Mladenovic, Lavina Diamanti, Bao Chen", 
+    tier: "NORMAL",
+    tags: ["BIS"],
+    highlights: {
+      zh: ["BoB*6",
+       "BIS1*3",
+        "BIS4*1"],
+      en: ["BoB*6",
+       "BIS1*3",
+        "BIS4*1"],
+    },
+    images: [
+      {
+        src: "/results/rollies-nanjing1.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+      {
+        src: "/results/rollies-nanjing2.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+    ],
+  },
+
+  {
     id: "2025-10-24-cku-main-day2",
     date: "2025-10-24",
     dogName: "Rollies",
-    title: { zh: "CKU Main Show", en: "CKU Main Show" },
+    title: { zh: "CKU 本部展", en: "CKU Main Show" },
     location: "China",
     judge: "Ireland Terrier Specialist",
     tier: "HIGHLIGHT",

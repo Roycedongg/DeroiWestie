@@ -25,8 +25,8 @@ function sortResults(a: ShowResult, b: ShowResult) {
   return a.id.localeCompare(b.id);
 }
 
-function isHighlight(r: ShowResult) {
-  return r.tier === "HIGHLIGHT" || (r.tags ?? []).some((tt) => /BIS|BOG|BOB/i.test(tt));
+function isPinnedHighlight(r: ShowResult) {
+  return r.tier === "HIGHLIGHT";
 }
 
 export default function ResultsClient({ locale }: { locale: Locale }) {
@@ -54,17 +54,20 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
       "Search: BIS / BOG / judge / location / title…"
     ),
 
-    highlightTitle: t(activeLocale, "高光战绩", "Highlights"),
+    highlightTitle: t(activeLocale, "高光大赛", "Highlights"),
+    normalTitle: t(activeLocale, "地方比赛", "Local Shows"),
     emptyHighlight: t(
       activeLocale,
       "暂无高光战绩（你可以在 data/results.ts 里把 tier 设为 HIGHLIGHT，或加上 BIS/BOG/BOB tag）。",
       "No highlights yet (set tier to HIGHLIGHT in data/results.ts, or add BIS/BOG/BOB tags)."
     ),
+    emptyNormal: t(activeLocale, "暂无普通战绩。", "No normal results yet."),
 
     timelineTitle: t(activeLocale, "时间线", "Timeline"),
     emptyTimeline: t(activeLocale, "当前筛选下暂无记录。", "No records under current filters."),
 
     badgeHighlight: t(activeLocale, "高光", "Highlight"),
+    badgeNormal: t(activeLocale, "普通", "Normal"),
     judgeLabel: t(activeLocale, "审查：", "Judge: "),
 
     countRecords: (total: number, hi: number) =>
@@ -106,19 +109,88 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
     });
   }, [sortedAll, dogFilter, query, activeLocale]);
 
-  const highlights = useMemo(() => filtered.filter(isHighlight), [filtered]);
-  const normal = useMemo(() => filtered.filter((r) => !isHighlight(r)), [filtered]);
+  const highlights = useMemo(() => filtered.filter(isPinnedHighlight), [filtered]);
+  const normal = useMemo(() => filtered.filter((r) => !isPinnedHighlight(r)), [filtered]);
+
+  const renderResultCard = (r: ShowResult, badgeText?: string) => (
+    <div key={r.id} className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="text-xs font-semibold text-zinc-500">{formatDate(r.date)}</div>
+          <div className="mt-1 text-lg font-bold text-zinc-900">{r.title[activeLocale]}</div>
+          <div className="mt-1 text-sm text-zinc-600">
+            {r.dogName}
+            {r.location ? <span className="text-zinc-400"> · </span> : null}
+            {r.location ?? ""}
+          </div>
+        </div>
+
+        {badgeText ? (
+          <span className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-semibold text-zinc-700">
+            {badgeText}
+          </span>
+        ) : null}
+      </div>
+
+      {r.images?.length ? (
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          {r.images.map((img, idx) => (
+            <button
+              key={img.src}
+              type="button"
+              onClick={() => {
+                setLightboxImages(r.images!.map((x) => ({ src: x.src, alt: x.alt?.[activeLocale] })));
+                setLightboxIndex(idx);
+              }}
+              className="relative aspect-[4/3] overflow-hidden rounded-xl border border-zinc-200 focus:outline-none"
+            >
+              <Image
+                src={img.src}
+                alt={img.alt?.[activeLocale] ?? r.title[activeLocale]}
+                fill
+                className="object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      {r.tags?.length ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {r.tags.map((tt) => (
+            <span
+              key={tt}
+              className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700"
+            >
+              {tt}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <ul className="mt-4 space-y-2 text-sm text-zinc-700">
+        {r.highlights[activeLocale].map((h) => (
+          <li key={h} className="flex gap-2">
+            <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-zinc-400" />
+            <span>{h}</span>
+          </li>
+        ))}
+      </ul>
+
+      {r.judge ? <div className="mt-4 text-xs text-zinc-500">{ui.judgeLabel}{r.judge}</div> : null}
+    </div>
+  );
 
   const groupedByYear = useMemo(() => {
     const map = new Map<string, ShowResult[]>();
-    for (const r of normal) {
+    for (const r of filtered) {
       const y = getYear(r.date);
       if (!map.has(y)) map.set(y, []);
       map.get(y)!.push(r);
     }
     for (const [y, arr] of map) map.set(y, [...arr].sort(sortResults));
     return Array.from(map.entries()).sort((a, b) => (a[0] < b[0] ? 1 : -1));
-  }, [normal]);
+  }, [filtered]);
 
   return (
     <div className="min-h-screen bg-brand">
@@ -188,74 +260,25 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                 {ui.emptyHighlight}
               </div>
             ) : (
-              highlights.map((r) => (
-                <div key={r.id} className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-semibold text-zinc-500">{formatDate(r.date)}</div>
-                      <div className="mt-1 text-lg font-bold text-zinc-900">{r.title[activeLocale]}</div>
-                      <div className="mt-1 text-sm text-zinc-600">
-                        {r.dogName}
-                        {r.location ? <span className="text-zinc-400"> · </span> : null}
-                        {r.location ?? ""}
-                      </div>
-                    </div>
+              highlights.map((r) => renderResultCard(r, ui.badgeHighlight))
+            )}
+          </div>
+        </div>
 
-                    <span className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-semibold text-zinc-700">
-                      {ui.badgeHighlight}
-                    </span>
-                  </div>
+        {/* Normal */}
+        <div className="mt-10">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold text-white">{ui.normalTitle}</div>
+            <div className="text-xs text-zinc-300">{ui.countItems(normal.length)}</div>
+          </div>
 
-                  {r.images?.length ? (
-                    <div className="mt-4 grid grid-cols-2 gap-2">
-                      {r.images.map((img, idx) => (
-                        <button
-                          key={img.src}
-                          type="button"
-                          onClick={() => {
-                            setLightboxImages(
-                              r.images!.map((x) => ({ src: x.src, alt: x.alt?.[activeLocale] }))
-                            );
-                            setLightboxIndex(idx);
-                          }}
-                          className="relative aspect-[4/3] overflow-hidden rounded-xl border border-zinc-200 focus:outline-none"
-                        >
-                          <Image
-                            src={img.src}
-                            alt={img.alt?.[activeLocale] ?? r.title[activeLocale]}
-                            fill
-                            className="object-cover"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  {r.tags?.length ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {r.tags.map((tt) => (
-                        <span
-                          key={tt}
-                          className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700"
-                        >
-                          {tt}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  <ul className="mt-4 space-y-2 text-sm text-zinc-700">
-                    {r.highlights[activeLocale].map((h) => (
-                      <li key={h} className="flex gap-2">
-                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-zinc-400" />
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {r.judge ? <div className="mt-4 text-xs text-zinc-500">{ui.judgeLabel}{r.judge}</div> : null}
-                </div>
-              ))
+          <div className="mt-3 grid gap-4 md:grid-cols-2">
+            {normal.length === 0 ? (
+              <div className="rounded-3xl border border-zinc-200 bg-white p-6 text-sm text-zinc-600">
+                {ui.emptyNormal}
+              </div>
+            ) : (
+              normal.map((r) => renderResultCard(r, ui.badgeNormal))
             )}
           </div>
         </div>
@@ -292,18 +315,23 @@ export default function ResultsClient({ locale }: { locale: Locale }) {
                             </div>
                           </div>
 
-                          {r.tags?.length ? (
-                            <div className="flex flex-wrap gap-2 md:justify-end">
-                              {r.tags.slice(0, 4).map((tt) => (
-                                <span
-                                  key={tt}
-                                  className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700"
-                                >
-                                  {tt}
-                                </span>
-                              ))}
-                            </div>
-                          ) : null}
+                          <div className="flex flex-wrap gap-2 md:justify-end">
+                            {isPinnedHighlight(r) ? (
+                              <span className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-semibold text-zinc-700">
+                                {ui.badgeHighlight}
+                              </span>
+                            ) : null}
+                            {r.tags?.length
+                              ? r.tags.slice(0, 4).map((tt) => (
+                                  <span
+                                    key={tt}
+                                    className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700"
+                                  >
+                                    {tt}
+                                  </span>
+                                ))
+                              : null}
+                          </div>
                         </div>
 
                         <ul className="mt-4 space-y-2 text-sm text-zinc-700">
