@@ -30,6 +30,34 @@ export type ShowResult = {
 };
 
 export const showResults: ShowResult[] = [
+{
+    id: "2026-03-13-rollies-stats",
+    date: "2026-03-13",
+    dogName: "Rollies",
+    title: { zh: "CKU 嘉兴站", en: "Debut at CKU Jiaxing" },
+    location: "China",
+    judge:"Lance Wright, Peerapong Pisitwuttinan", 
+    tier: "NORMAL",
+    tags: ["BIS"],
+    highlights: {
+      zh: ["BoB*6, BIS2*1, BIS3*1, BIS4*1"],
+      en: ["Bob*6, BIS2*1, BIS3*1, BIS4*1"],
+    },
+    images: [
+      {
+        src: "/results/rollies-jiaxing1.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+      {
+        src: "/results/rollies-jiaxing2.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },{
+        src: "/results/rollies-jiaxing3.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+    ],
+  },
+
   {
     id: "2026-01-17-rollies-stats",
     date: "2026-01-17",
