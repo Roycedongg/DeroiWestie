@@ -33,6 +33,7 @@ export const LOCALES: SupportedLocale[] = ["zh", "en"];
 
 export const LOCALE_SEGMENTS = [
   "",
+  "/about",
   "/services",
   "/results",
   "/kennel",

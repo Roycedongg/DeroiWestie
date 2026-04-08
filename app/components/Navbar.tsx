@@ -9,9 +9,10 @@ const NAV = [
   { href: "/", zh: "首页", en: "Home" },
   { href: "/services", zh: "服务", en: "Services" },
   { href: "/results", zh: "战绩", en: "Results" },
-    { href: "/kennel", zh: "犬舍", en: "Kennel" },
+  { href: "/kennel", zh: "犬舍", en: "Kennel" },
   { href: "/gallery", zh: "作品集", en: "Gallery" },
   { href: "/contact", zh: "联系", en: "Contact" },
+  { href: "/about", zh: "关于", en: "About" },
 ];
 
 export default function Navbar({ locale }: { locale?: Locale }) {

@@ -27,6 +27,7 @@ export default function Footer({ locale }: { locale: "zh" | "en" }) {
               {isEn ? "Navigation" : "网站导航"}
             </div>
             <ul className="mt-3 space-y-2 text-xs">
+              <li><Link href={`/${locale}/about`} className="hover:text-white">{isEn ? "About" : "关于"}</Link></li>
               <li><Link href={`/${locale}/services`} className="hover:text-white">Services</Link></li>
               <li><Link href={`/${locale}/results`} className="hover:text-white">Results</Link></li>
               <li><Link href={`/${locale}/gallery`} className="hover:text-white">Gallery</Link></li>
