@@ -90,8 +90,8 @@ export default async function ServicesPage({
     title: locale === "zh" ? "服务项目" : "Services",
     subtitle:
       locale === "zh"
-        ? "点击条目展开查看完整内容。价格与时长可能因毛量、打结与配合度调整。"
-        : "Click an item to expand full details. Price and duration may vary based on coat volume, matting, and cooperation.",
+        ? "温哥华专业宠物美容, 点击条目展开查看完整内容。价格与时长可能因毛量、打结与配合度调整。"
+        : "Professional hand stripping & pet grooming service in Vancouver. Click an item to expand full details. Price and duration may vary based on coat volume, matting, and cooperation.",
     consult: locale === "zh" ? "先咨询" : "Contact first",
     book: locale === "zh" ? "立即预约" : "Book now",
     includes: locale === "zh" ? "包含内容" : "What's included",

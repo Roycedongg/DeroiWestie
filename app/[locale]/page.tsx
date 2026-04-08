@@ -58,13 +58,14 @@ export default async function HomePage({
 
     intro: isEn ? (
       <>
+        <p>Pet Grooming in Vancouver & Richmond, BC </p>
         <p>
           We specialize in coat quality and silhouette management for West
           Highland White Terriers and other wire-coated terriers.
         </p>
         <p className="mt-2">
           Our services include hand-stripping, routine coat maintenance, bath &
-          tidy, and full grooming.
+          tidy, and full grooming for all dog breeds.
         </p>
         <p className="mt-2">
           With years of kennel and show experience, we focus on structure,
@@ -74,7 +75,7 @@ export default async function HomePage({
     ) : (
       <>
         <p>
-          专注西高地等刚毛梗犬的毛质与轮廓管理，提供手拔毛开荒与周期维护、洗护修整及全剪造型服务。
+          专注西高地等刚毛梗犬的毛质与轮廓管理，提供手拔毛开荒与周期维护、宠物犬洗护修整及全剪造型服务。
         </p>
         <p className="mt-2">
           我们拥有多年犬舍与赛犬经验，注重结构、血统与长期护理规划，希望每一次护理都更稳定、更细腻、更舒适。
