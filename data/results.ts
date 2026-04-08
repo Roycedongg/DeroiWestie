@@ -40,8 +40,28 @@ export const showResults: ShowResult[] = [
     tier: "HIGHLIGHT",
     tags: ["BIS, BISS"],
     highlights: {
-      zh: ["PBoB*11 Open BoB*8, BIG*4, BIS3*2, PBIS*5"],
-      en: ["Bob*6, BIS2*1, BIS3*1, BIS4*1"],
+      zh: ["PBoB*11 Open BoB*8, BIG*4, BIS3*2, PBIS*5",
+        "11 shows：10 个 Puppy Best of Breed（PBOB）",
+        "8 个 Open Best of Breed(最佳西高地）",
+        "6 个 Puppy Best in Group（Terrier Group 1st）",
+        "3 个 Open Best in Group ",
+        "2 个 Best in Show（PBIS）",
+        "2 个 Open Best in Show 3（BIS 3）",
+        "梗犬单独展最佳幼小梗犬Group 3 PBISS - Specialty Best Puppy Terrier",
+        "梗犬单独展成年组全场最佳第三Group 3 Open BISS 3- Speicaly Best Terrier 3",
+        "One of the biggest shows in Thailand — major highlight",
+        "一站完成泰国登陆冠军"
+      ],
+      en: ["PBoB*11 Open BoB*8, BIG*4, BIS3*2, PBIS*5",
+        "11 shows：10 Puppy Best of Breed（PBOB）",
+        "6 Puppy Best in Group（Terrier Group 1st）",
+        "3 Open Best in Group ",
+        "2 Best in Show（PBIS）",
+        "2 Open Best in Show 3（BIS 3）",
+        "Group 3 PBISS - Specialty Best Puppy Terrier",
+        "Group 3 Open BISS 3- Speicaly Best Terrier 3",
+        "One of the biggest shows in Thailand — major highlight",
+      "Thailand Champion in one game"],
     },
     images: [
       {
@@ -49,7 +69,7 @@ export const showResults: ShowResult[] = [
         alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
       },
       {
-        src: "/results/rollies-thaig2.jpg",
+        src: "/results/rollies-thai2.jpg",
         alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
       },{
         src: "/results/rollies-thai3.jpg",
