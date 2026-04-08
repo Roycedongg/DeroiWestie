@@ -30,6 +30,41 @@ export type ShowResult = {
 };
 
 export const showResults: ShowResult[] = [
+  {
+    id: "2026-04-03-rollies-stats",
+    date: "2026-04-03",
+    dogName: "Rollies",
+    title: { zh: "泰国公主杯", en: "Thailand Princess Honor Championship Cup" },
+    location: "Thailand",
+    judge:"Masahiko Fukamachi, Elisabeth Feuz, Mark Johnston, Dayna Johnston", 
+    tier: "HIGHLIGHT",
+    tags: ["BIS, BISS"],
+    highlights: {
+      zh: ["PBoB*11 Open BoB*8, BIG*4, BIS3*2, PBIS*5"],
+      en: ["Bob*6, BIS2*1, BIS3*1, BIS4*1"],
+    },
+    images: [
+      {
+        src: "/results/rollies-thai1.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+      {
+        src: "/results/rollies-thaig2.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },{
+        src: "/results/rollies-thai3.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+      {
+        src: "/results/rollies-thai4.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+      {
+        src: "/results/rollies-thai5.jpg",
+        alt: { zh: "BIS 赏励照", en: "BIS Award Photo" },
+      },
+    ],
+  },
 {
     id: "2026-03-13-rollies-stats",
     date: "2026-03-13",
