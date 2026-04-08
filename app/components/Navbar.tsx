@@ -17,6 +17,10 @@ const NAV = [
 export default function Navbar({ locale }: { locale?: Locale }) {
   const pathname = usePathname() || "/zh";
 
+  const persistLocale = (nextLocale: Locale) => {
+    document.cookie = `preferred-locale=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+  };
+
   // 从 URL 判断语言（最稳）
   const detectedLocale: Locale =
     pathname.startsWith("/en") ? "en" : pathname.startsWith("/zh") ? "zh" : "zh";
@@ -58,6 +62,7 @@ export default function Navbar({ locale }: { locale?: Locale }) {
         <div className="flex items-center gap-2">
           <Link
             href={zhHref}
+            onClick={() => persistLocale("zh")}
             className={`rounded-full px-3 py-1 text-xs font-semibold ${
               activeLocale === "zh"
                 ? "bg-white text-zinc-900"
@@ -68,6 +73,7 @@ export default function Navbar({ locale }: { locale?: Locale }) {
           </Link>
           <Link
             href={enHref}
+            onClick={() => persistLocale("en")}
             className={`rounded-full px-3 py-1 text-xs font-semibold ${
               activeLocale === "en"
                 ? "bg-white text-zinc-900"
