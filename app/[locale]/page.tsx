@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { BOOKING_URL } from "@/lib/booking";
 import { knewave } from "@/app/fonts";
+import { SITE, getSiteUrl } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -11,6 +12,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isEn = locale === "en";
+  const safeLocale = isEn ? "en" : "zh";
+  const siteUrl = getSiteUrl();
 
   return {
     title: isEn
@@ -35,6 +38,13 @@ export async function generateMetadata({
           "手拔毛",
           "DeRoi Westie",
         ],
+    alternates: {
+      canonical: `${siteUrl}/${safeLocale}`,
+      languages: {
+        "zh-CN": `${siteUrl}/zh`,
+        en: `${siteUrl}/en`,
+      },
+    },
   };
 }
 
@@ -85,6 +95,57 @@ export default async function HomePage({
   const { locale } = await params;
   const isEn = locale === "en";
   const base = isEn ? "/en" : "/zh";
+  const siteUrl = getSiteUrl();
+  const pageUrl = `${siteUrl}${base}`;
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "PetGrooming",
+      name: SITE.name,
+      url: pageUrl,
+      email: SITE.email,
+      areaServed: SITE.areaServed,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Richmond",
+        addressRegion: "BC",
+        addressCountry: "CA",
+      },
+      sameAs: SITE.socialLinks,
+      makesOffer: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Pet Grooming in Richmond, BC",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Hand Stripping",
+          },
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: SITE.name,
+      url: siteUrl,
+      email: SITE.email,
+      sameAs: SITE.socialLinks,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE.name,
+      url: siteUrl,
+      inLanguage: isEn ? "en" : "zh-CN",
+    },
+  ];
 
   const t = {
     subtitle: isEn
@@ -185,6 +246,10 @@ export default async function HomePage({
 
   return (
     <div className="min-h-screen bg-brand">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* HERO */}
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">

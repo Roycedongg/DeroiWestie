@@ -1,6 +1,8 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { services, type Locale } from "@/data/services";
+import { getSiteUrl } from "@/lib/site";
 
 function formatMoneyCAD(n: number) {
   return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(n);
@@ -31,6 +33,38 @@ function BulletList({ items }: { items: string[] }) {
       ))}
     </ul>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale, id } = await params;
+  const locale: Locale = rawLocale === "en" ? "en" : "zh";
+  const siteUrl = getSiteUrl();
+  const item = services.find((service) => service.id === id);
+
+  if (!item) {
+    return {
+      title: locale === "zh" ? "服务项目" : "Services",
+    };
+  }
+
+  return {
+    title: locale === "zh" ? `${item.title.zh} | Richmond 宠物美容` : `${item.title.en} | Pet Grooming in Richmond, BC`,
+    description:
+      locale === "zh"
+        ? item.shortDesc.zh
+        : item.shortDesc.en,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/services/${item.id}`,
+      languages: {
+        "zh-CN": `${siteUrl}/zh/services/${item.id}`,
+        en: `${siteUrl}/en/services/${item.id}`,
+      },
+    },
+  };
 }
 
 export default async function ServiceDetail({

@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { services, serviceCategories, type Locale } from "@/data/services";
 import { BOOKING_URL } from "@/lib/booking";
+import { getSiteUrl } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -11,6 +12,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isEn = locale === "en";
+  const safeLocale = isEn ? "en" : "zh";
+  const siteUrl = getSiteUrl();
 
   return {
     title: isEn
@@ -33,6 +36,13 @@ export async function generateMetadata({
           "手拔毛 Richmond",
           "西高地美容",
         ],
+    alternates: {
+      canonical: `${siteUrl}/${safeLocale}/services`,
+      languages: {
+        "zh-CN": `${siteUrl}/zh/services`,
+        en: `${siteUrl}/en/services`,
+      },
+    },
   };
 }
 
