@@ -46,7 +46,7 @@ export const kennelDogs: KennelDog[] = [
   {
     id: "rollies- bitch-01",
     sex: "female",
-    name: { zh: "DeRoi Rollies on a Roll", en: "DeRoi Rollies on a Roll" },
+    name: { zh: "DeRoi Rollies on a Roll, CN CH, TH CH, BISS", en: "DeRoi Rollies on a Roll, CN CH, TH CH, BISS" },
     callName: { zh: "嘬嘬", en: "Rollies" },
     image: {
       src: "/kennel/rollies-bitch-01.jpg",
