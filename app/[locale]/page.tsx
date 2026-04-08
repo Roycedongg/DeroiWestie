@@ -1,7 +1,42 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { BOOKING_URL } from "@/lib/booking";
 import { knewave } from "@/app/fonts";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === "en";
+
+  return {
+    title: isEn
+      ? "DeRoi Westie | Pet Grooming in Richmond, BC"
+      : "DeRoi Westie | Richmond 宠物美容与西高地犬舍",
+    description: isEn
+      ? "DeRoi Westie offers pet grooming in Richmond, BC, including hand stripping, bath and tidy, full grooming, and Westie-focused coat care."
+      : "DeRoi Westie 提供 Richmond 宠物美容服务，包括手拔毛、洗护修整、全剪造型，以及针对西高地等刚毛犬的护理。", 
+    keywords: isEn
+      ? [
+          "pet grooming in Richmond",
+          "pet grooming Richmond BC",
+          "dog grooming Richmond BC",
+          "hand stripping Richmond",
+          "Westie grooming Richmond",
+          "DeRoi Westie",
+        ]
+      : [
+          "Richmond 宠物美容",
+          "Richmond 狗狗美容",
+          "西高地护理",
+          "手拔毛",
+          "DeRoi Westie",
+        ],
+  };
+}
 
 function Pill({
   children,
@@ -58,7 +93,7 @@ export default async function HomePage({
 
     intro: isEn ? (
       <>
-        <p>Pet Grooming in Vancouver & Richmond, BC </p>
+        <p>Pet grooming in Richmond, BC, and Vancouver.</p>
         <p>
           We specialize in coat quality and silhouette management for West
           Highland White Terriers and other wire-coated terriers.

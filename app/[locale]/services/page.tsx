@@ -1,7 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { services, serviceCategories, type Locale } from "@/data/services";
 import { BOOKING_URL } from "@/lib/booking";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === "en";
+
+  return {
+    title: isEn
+      ? "Services | Pet Grooming in Richmond, BC"
+      : "服务项目 | Richmond 宠物美容",
+    description: isEn
+      ? "Explore DeRoi Westie's pet grooming in Richmond, BC, including hand stripping, bath and tidy, full grooming, and coat maintenance."
+      : "查看 DeRoi Westie 在 Richmond 的宠物美容服务，包括手拔毛、洗护修整、全剪造型与周期护理。",
+    keywords: isEn
+      ? [
+          "pet grooming in Richmond",
+          "pet grooming Richmond BC",
+          "dog grooming Richmond BC",
+          "hand stripping Richmond",
+          "Westie grooming Richmond",
+        ]
+      : [
+          "Richmond 宠物美容",
+          "Richmond 狗狗美容",
+          "手拔毛 Richmond",
+          "西高地美容",
+        ],
+  };
+}
 
 function formatMoneyCAD(n: number) {
   return new Intl.NumberFormat("en-CA", {
@@ -90,8 +123,8 @@ export default async function ServicesPage({
     title: locale === "zh" ? "服务项目" : "Services",
     subtitle:
       locale === "zh"
-        ? "温哥华专业宠物美容, 点击条目展开查看完整内容。价格与时长可能因毛量、打结与配合度调整。"
-        : "Professional hand stripping & pet grooming service in Vancouver. Click an item to expand full details. Price and duration may vary based on coat volume, matting, and cooperation.",
+        ? "Richmond / 温哥华专业宠物美容，点击条目展开查看完整内容。价格与时长可能因毛量、打结与配合度调整。"
+        : "Professional hand stripping and pet grooming in Richmond, BC, and Vancouver. Click an item to expand full details. Price and duration may vary based on coat volume, matting, and cooperation.",
     consult: locale === "zh" ? "先咨询" : "Contact first",
     book: locale === "zh" ? "立即预约" : "Book now",
     includes: locale === "zh" ? "包含内容" : "What's included",
